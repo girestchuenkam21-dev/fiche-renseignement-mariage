@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('.form-header');
     if (header) header.style.display = 'none';
 
-    form.style.display = 'none';
+    form.classList.add('hidden');
     recap.classList.add('visible');
     recap.scrollIntoView({ block: 'start' });
   }
