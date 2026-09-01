@@ -1,13 +1,22 @@
 // URL configurée dans js/config.js
 
 document.addEventListener('DOMContentLoaded', () => {
+  const nav = performance.getEntriesByType('navigation')[0];
+  if (sessionStorage.getItem('mariage-thanks') === '1') {
+    if (nav && nav.type === 'reload') {
+      sessionStorage.removeItem('mariage-thanks');
+      window.location.replace('index.html');
+      return;
+    }
+    sessionStorage.removeItem('mariage-thanks');
+  }
+
   const form = document.getElementById('form-mariage');
   const nbEnfantsBlock = document.getElementById('nb-enfants-block');
   const accompagnantBlock = document.getElementById('accompagnant-block');
   const activitesAccBlock = document.getElementById('activites-acc-block');
   const activitesPrincipalBlock = document.getElementById('activites-principal-block');
   const recap = document.getElementById('recap');
-  const recapText = document.getElementById('recap-text');
   const status = document.getElementById('submit-status');
 
   if (!form) return;
@@ -140,60 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  function buildRecap(data) {
-    const {
-      prenom, nom, enfants, nbEnfants, accompagne, activitesInteret,
-      actJeudi, actVendredi, actLundi, menuPrincipal,
-      prenomAcc, nomAcc, activitesInteretAcc, actJeudiAcc, actVendrediAcc, actLundiAcc, menuAcc
-    } = data;
-    const avecEnfants = enfants === 'Oui';
-    const estAccompagne = accompagne === 'Oui';
-
-    let text = `FICHE RENSEIGNEMENTS — MARIAGE\n`;
-    text += `${'='.repeat(36)}\n\n`;
-    text += `INVITÉ(E)\n`;
-    text += `  Nom : ${prenom} ${nom}\n`;
-    text += `  Enfants : ${avecEnfants ? 'Oui (' + nbEnfants + ')' : 'Non'}\n`;
-    text += `  Accompagné(e) : ${accompagne}\n`;
-    text += `  Intéressé(e) par les activités : ${activitesInteret}\n`;
-    if (activitesInteret === 'Oui') {
-      text += `  Activités jeudi : ${actJeudi.length ? actJeudi.join(', ') : 'Aucune'}\n`;
-      text += `  Activités vendredi : ${actVendredi.length ? actVendredi.join(', ') : 'Aucune'}\n`;
-      text += `  Brunch lundi : ${actLundi.length ? actLundi.join(', ') : 'Non'}\n`;
-    }
-    text += `  Menu : ${menuPrincipal}\n`;
-
-    if (estAccompagne) {
-      text += `\nACCOMPAGNANT(E)\n`;
-      text += `  Nom : ${prenomAcc} ${nomAcc}\n`;
-      text += `  Intéressé(e) par les activités : ${activitesInteretAcc}\n`;
-      if (activitesInteretAcc === 'Oui') {
-        text += `  Activités jeudi : ${actJeudiAcc.length ? actJeudiAcc.join(', ') : 'Aucune'}\n`;
-        text += `  Activités vendredi : ${actVendrediAcc.length ? actVendrediAcc.join(', ') : 'Aucune'}\n`;
-        text += `  Brunch lundi : ${actLundiAcc.length ? actLundiAcc.join(', ') : 'Non'}\n`;
-      }
-      text += `  Menu : ${menuAcc}\n`;
-    }
-
-    return text;
-  }
-
-  function saveResponse(text) {
-    try {
-      const responses = JSON.parse(localStorage.getItem('mariage-reponses') || '[]');
-      responses.push({ date: new Date().toISOString(), contenu: text });
-      localStorage.setItem('mariage-reponses', JSON.stringify(responses));
-    } catch (e) {
-      // localStorage indisponible — non bloquant
-    }
-  }
-
   async function sendToGoogleSheets(data) {
     if (!GOOGLE_SCRIPT_URL) return true;
 
     const payload = JSON.stringify(data);
 
-    // Méthode 1 : POST JSON en text/plain (évite les problèmes CORS)
     try {
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
@@ -210,10 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response.ok) return true;
       }
     } catch (e) {
-      // on tente la méthode 2
+      // méthode de secours
     }
 
-    // Méthode 2 : no-cors (les données sont quand même enregistrées côté Google)
     await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
@@ -224,21 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
     return true;
   }
 
-  function showSuccess(text) {
-    recapText.textContent = text;
-    saveResponse(text);
+  function showSuccess() {
+    sessionStorage.setItem('mariage-thanks', '1');
 
     const header = document.querySelector('.form-header');
     if (header) header.style.display = 'none';
 
     form.style.display = 'none';
     recap.classList.add('visible');
-
-    const recapMessage = document.getElementById('recap-message');
-    if (recapMessage) {
-      recapMessage.textContent = 'Vos informations ont été prises en compte. Merci.';
-    }
-
     recap.scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -249,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const btn = document.getElementById('btn-submit');
     const data = getFormData();
-    const text = buildRecap(data);
 
     btn.disabled = true;
     btn.textContent = 'Envoi en cours…';
@@ -259,34 +210,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       await sendToGoogleSheets(data);
-      showSuccess(text);
+      showSuccess();
     } catch (err) {
       showFormError('Erreur lors de l\'envoi. Réessayez dans un instant.');
       btn.disabled = false;
       btn.textContent = 'Envoyer';
     }
-  });
-
-  document.getElementById('btn-copy').addEventListener('click', () => {
-    navigator.clipboard.writeText(recapText.textContent).then(() => {
-      const btn = document.getElementById('btn-copy');
-      const orig = btn.textContent;
-      btn.textContent = 'Copié !';
-      setTimeout(() => { btn.textContent = orig; }, 2000);
-    });
-  });
-
-  document.getElementById('btn-modifier').addEventListener('click', () => {
-    form.style.display = 'block';
-    const header = document.querySelector('.form-header');
-    if (header) header.style.display = 'block';
-    recap.classList.remove('visible');
-    status.style.display = 'none';
-
-    const btn = document.getElementById('btn-submit');
-    btn.disabled = false;
-    btn.textContent = 'Envoyer';
-
-    form.scrollIntoView({ behavior: 'smooth' });
   });
 });
