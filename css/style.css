@@ -73,8 +73,8 @@ body {
 /* ── Landing page ── */
 
 .page-landing {
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -87,6 +87,7 @@ body {
   justify-content: center;
   text-align: center;
   padding: 1rem 1.5rem 2rem;
+  min-height: 0;
 }
 
 .hero-line {
@@ -148,12 +149,13 @@ body {
 
 .site-footer {
   text-align: center;
-  padding: 1rem;
+  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
   font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-muted);
   border-top: 1px solid var(--green-border);
+  flex-shrink: 0;
 }
 
 /* ── Form page ── */
