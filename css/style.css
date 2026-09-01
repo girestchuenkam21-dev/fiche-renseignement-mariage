@@ -560,23 +560,31 @@ label.field-label {
   background: transparent;
 }
 
-.submit-status {
-  text-align: left;
-  margin-top: 0.75rem;
-  font-size: 0.85rem;
-  color: var(--text-soft);
-  display: none;
-}
-
 .error-msg {
-  color: var(--burgundy);
+  color: #6b3a3a;
   font-size: 0.8rem;
   margin-top: 0.35rem;
   display: none;
 }
 
-.field.error input { border-bottom-color: var(--burgundy); }
 .field.error .error-msg { display: block; }
+
+.field.error input { border-bottom-color: #6b3a3a; }
+
+#field-menu-principal.error .error-msg,
+#field-menu-acc.error .error-msg {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.submit-status {
+  text-align: left;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #5c534c;
+  display: none;
+  padding: 0.65rem 0;
+}
 
 #recap { display: none; }
 #recap.visible { display: block; }
