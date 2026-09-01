@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiche renseignements — Axelle & Axel</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-form">
+  <div class="form-page">
+    <header class="form-header">
+      <a href="index.html" class="back-link">← Retour</a>
+      <p class="form-context">Mariage · Cape Town</p>
+      <h1>Fiche de renseignements</h1>
+    </header>
+
+    <div class="container">
+      <form id="form-mariage" novalidate>
+
+        <section class="form-section">
+          <h2>Identité</h2>
+          <div class="row">
+            <div class="field" id="field-prenom">
+              <label class="field-label" for="prenom">Prénom</label>
+              <input type="text" id="prenom" name="prenom" required autocomplete="given-name">
+              <span class="error-msg">Indiquez votre prénom.</span>
+            </div>
+            <div class="field" id="field-nom">
+              <label class="field-label" for="nom">Nom</label>
+              <input type="text" id="nom" name="nom" required autocomplete="family-name">
+              <span class="error-msg">Indiquez votre nom.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>Enfants</h2>
+          <div class="field">
+            <label class="field-label">Venez-vous avec des enfants ?</label>
+            <div class="toggle-group">
+              <div class="toggle-option">
+                <input type="radio" name="enfants" id="enfants-non" value="non" checked>
+                <label for="enfants-non">Non</label>
+              </div>
+              <div class="toggle-option">
+                <input type="radio" name="enfants" id="enfants-oui" value="oui">
+                <label for="enfants-oui">Oui</label>
+              </div>
+            </div>
+          </div>
+          <div class="field hidden" id="nb-enfants-block">
+            <label class="field-label" for="nb-enfants">Nombre d'enfants</label>
+            <input type="number" id="nb-enfants" name="nb-enfants" min="1" max="10" value="1">
+            <span class="error-msg">Indiquez le nombre d'enfants.</span>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>Accompagnement</h2>
+          <div class="field">
+            <label class="field-label">Venez-vous accompagné(e) ?</label>
+            <div class="toggle-group">
+              <div class="toggle-option">
+                <input type="radio" name="accompagne" id="acc-non" value="non" checked>
+                <label for="acc-non">Non</label>
+              </div>
+              <div class="toggle-option">
+                <input type="radio" name="accompagne" id="acc-oui" value="oui">
+                <label for="acc-oui">Oui</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="hidden" id="accompagnant-block">
+            <div class="row" style="margin-top: 1.25rem;">
+              <div class="field" id="field-prenom-acc">
+                <label class="field-label" for="prenom-acc">Prénom de l'accompagnant(e)</label>
+                <input type="text" id="prenom-acc" name="prenom-acc">
+                <span class="error-msg">Indiquez le prénom.</span>
+              </div>
+              <div class="field" id="field-nom-acc">
+                <label class="field-label" for="nom-acc">Nom de l'accompagnant(e)</label>
+                <input type="text" id="nom-acc" name="nom-acc">
+                <span class="error-msg">Indiquez le nom.</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Est-il / elle intéressé(e) par les activités ?</label>
+              <div class="toggle-group">
+                <div class="toggle-option">
+                  <input type="radio" name="activites-acc" id="activites-acc-non" value="non" checked>
+                  <label for="activites-acc-non">Non</label>
+                </div>
+                <div class="toggle-option">
+                  <input type="radio" name="activites-acc" id="activites-acc-oui" value="oui">
+                  <label for="activites-acc-oui">Oui</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="hidden" id="activites-acc-block">
+              <h3 class="subsection">Activités de l'accompagnant(e)</h3>
+
+              <div class="activity-day">
+                <p class="day-label">Jeudi</p>
+                <div class="checkbox-list">
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="act-jeudi-acc" value="Accueil et cocktail">
+                    <span>Accueil et cocktail</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="act-jeudi-acc" value="Dîner de famille">
+                    <span>Dîner de famille</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="act-jeudi-acc" value="Soirée conviviale">
+                    <span>Soirée conviviale</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="activity-day">
+                <p class="day-label">Vendredi</p>
+                <div class="checkbox-list">
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="act-vendredi-acc" value="Cérémonie / Préparatifs">
+                    <span>Cérémonie / Préparatifs</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="act-vendredi-acc" value="Repas du vendredi">
+                    <span>Repas du vendredi</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="act-vendredi-acc" value="Soirée dansante">
+                    <span>Soirée dansante</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="activity-day">
+                <p class="day-label">Lundi — Brunch</p>
+                <div class="checkbox-list">
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="act-lundi-acc" value="Brunch de clôture">
+                    <span>Brunch de clôture</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field" id="field-menu-acc" style="margin-top: 1.25rem;">
+              <label class="field-label">Menu de l'accompagnant(e)</label>
+              <div class="toggle-group">
+                <div class="toggle-option">
+                  <input type="radio" name="menu-acc" id="menu-acc-viande" value="Viande">
+                  <label for="menu-acc-viande">Viande</label>
+                </div>
+                <div class="toggle-option">
+                  <input type="radio" name="menu-acc" id="menu-acc-poisson" value="Poisson">
+                  <label for="menu-acc-poisson">Poisson</label>
+                </div>
+              </div>
+              <span class="error-msg">Choisissez viande ou poisson.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" id="prefs-principal">
+          <h2>Vos préférences</h2>
+
+          <div class="field">
+            <label class="field-label">Êtes-vous intéressé(e) par les activités ?</label>
+            <div class="toggle-group">
+              <div class="toggle-option">
+                <input type="radio" name="activites-principal" id="activites-principal-non" value="non" checked>
+                <label for="activites-principal-non">Non</label>
+              </div>
+              <div class="toggle-option">
+                <input type="radio" name="activites-principal" id="activites-principal-oui" value="oui">
+                <label for="activites-principal-oui">Oui</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="hidden" id="activites-principal-block">
+            <h3 class="subsection">Activités</h3>
+
+          <div class="activity-day">
+            <p class="day-label">Jeudi</p>
+            <div class="checkbox-list">
+              <label class="checkbox-item">
+                <input type="checkbox" name="act-jeudi" value="Accueil et cocktail">
+                <span>Accueil et cocktail</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="act-jeudi" value="Dîner de famille">
+                <span>Dîner de famille</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="act-jeudi" value="Soirée conviviale">
+                <span>Soirée conviviale</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="activity-day">
+            <p class="day-label">Vendredi</p>
+            <div class="checkbox-list">
+              <label class="checkbox-item">
+                <input type="checkbox" name="act-vendredi" value="Cérémonie / Préparatifs">
+                <span>Cérémonie / Préparatifs</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="act-vendredi" value="Repas du vendredi">
+                <span>Repas du vendredi</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="act-vendredi" value="Soirée dansante">
+                <span>Soirée dansante</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="activity-day">
+            <p class="day-label">Lundi — Brunch</p>
+            <div class="checkbox-list">
+              <label class="checkbox-item">
+                <input type="checkbox" name="act-lundi" value="Brunch de clôture">
+                <span>Brunch de clôture</span>
+              </label>
+            </div>
+          </div>
+          </div>
+
+          <h3 class="subsection">Menu</h3>
+          <div class="field" id="field-menu-principal">
+            <label class="field-label">Votre choix pour le repas</label>
+            <div class="toggle-group">
+              <div class="toggle-option">
+                <input type="radio" name="menu-principal" id="menu-viande" value="Viande">
+                <label for="menu-viande">Viande</label>
+              </div>
+              <div class="toggle-option">
+                <input type="radio" name="menu-principal" id="menu-poisson" value="Poisson">
+                <label for="menu-poisson">Poisson</label>
+              </div>
+            </div>
+            <span class="error-msg">Choisissez viande ou poisson.</span>
+          </div>
+        </section>
+
+        <button type="submit" class="btn-submit" id="btn-submit">Envoyer</button>
+        <p class="submit-status" id="submit-status"></p>
+      </form>
+
+      <div class="form-section recap-section" id="recap">
+        <h2>Merci</h2>
+        <p class="recap-intro" id="recap-message">Vos réponses ont été enregistrées.</p>
+        <div class="recap-content" id="recap-text"></div>
+        <div class="recap-actions">
+          <button type="button" class="btn-secondary" id="btn-copy">Copier</button>
+          <button type="button" class="btn-secondary" id="btn-modifier">Modifier</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/form.js"></script>
+</body>
+</html>
