@@ -185,9 +185,7 @@ form.addEventListener('submit', async (e) => {
   btn.disabled = true;
   btn.textContent = 'Envoi en cours…';
   status.style.display = 'block';
-  status.textContent = GOOGLE_SCRIPT_URL
-    ? 'Enregistrement dans Google Sheets…'
-    : 'Enregistrement en cours…';
+  status.textContent = 'Envoi en cours…';
 
   try {
     const result = await sendToGoogleSheets(data);
@@ -197,9 +195,8 @@ form.addEventListener('submit', async (e) => {
     document.querySelector('.form-header').style.display = 'none';
     form.style.display = 'none';
     recap.classList.add('visible');
-    document.getElementById('recap-message').textContent = result.localOnly
-      ? 'Vos réponses sont enregistrées. Merci pour votre participation !'
-      : 'Vos réponses ont été enregistrées dans Google Sheets. Merci !';
+    document.getElementById('recap-message').textContent =
+      'Vos informations ont été prises en compte. Merci.';
     recap.scrollIntoView({ behavior: 'smooth' });
   } catch {
     status.textContent = 'Erreur lors de l\'envoi. Réessayez ou copiez vos réponses.';
