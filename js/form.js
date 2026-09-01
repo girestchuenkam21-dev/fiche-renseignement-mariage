@@ -1,5 +1,4 @@
-// Collez ici l'URL de votre Google Apps Script (après déploiement)
-const GOOGLE_SCRIPT_URL = '';
+// URL configurée dans js/config.js
 
 const form = document.getElementById('form-mariage');
 const nbEnfantsBlock = document.getElementById('nb-enfants-block');
@@ -160,11 +159,12 @@ function saveResponse(text) {
 async function sendToGoogleSheets(data) {
   if (!GOOGLE_SCRIPT_URL) return { ok: true, localOnly: true };
 
+  const formData = new FormData();
+  formData.append('payload', JSON.stringify(data));
+
   const response = await fetch(GOOGLE_SCRIPT_URL, {
     method: 'POST',
-    mode: 'cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: formData
   });
 
   if (!response.ok) throw new Error('Erreur réseau');

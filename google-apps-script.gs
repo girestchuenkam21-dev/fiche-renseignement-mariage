@@ -9,10 +9,17 @@
 
 function doPost(e) {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Réponses') 
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Réponses')
                   || SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    
-    const data = JSON.parse(e.postData.contents);
+
+    let data;
+    if (e.postData && e.postData.contents) {
+      data = JSON.parse(e.postData.contents);
+    } else if (e.parameter && e.parameter.payload) {
+      data = JSON.parse(e.parameter.payload);
+    } else {
+      throw new Error('Aucune donnée reçue');
+    }
 
     sheet.appendRow([
       data.date || new Date().toLocaleString('fr-FR'),
@@ -44,6 +51,12 @@ function doPost(e) {
       .createTextOutput(JSON.stringify({ success: false, error: err.message }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+function doGet() {
+  return ContentService
+    .createTextOutput(JSON.stringify({ success: true, message: 'Script actif' }))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 function setupSheet() {
