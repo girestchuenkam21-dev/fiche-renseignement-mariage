@@ -573,17 +573,29 @@ label.field-label {
   padding: 3rem 1.5rem;
 }
 
+.recap-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
 .recap-intro {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
-  color: var(--text);
+  font-size: 1.15rem;
+  color: var(--text-soft);
   line-height: 1.6;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
+  text-align: center;
 }
 
 .recap-details {
   text-align: left;
   user-select: none;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .recap-block {
