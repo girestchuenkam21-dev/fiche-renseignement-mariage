@@ -1,8 +1,4 @@
-/* =============================================
-   MARIAGE — Design system
-   ============================================= */
-
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap');
+/* MARIAGE — Design system */
 
 :root {
   --cream: #faf6f0;
@@ -20,14 +16,14 @@
   --shadow-lg: 0 20px 60px rgba(42, 36, 32, 0.12);
   --radius: 4px;
   --radius-lg: 12px;
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Montserrat', system-ui, sans-serif;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
   --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; }
 
 body {
   font-family: var(--font-sans);
@@ -95,7 +91,6 @@ body.page-landing {
   background: var(--ivory);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
-  animation: fadeUp 1s ease-out;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -142,8 +137,6 @@ body.page-landing {
   color: var(--gold);
   letter-spacing: 0.3em;
   margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out 0.2s forwards;
 }
 
 .landing-subtitle {
@@ -154,8 +147,6 @@ body.page-landing {
   text-transform: uppercase;
   color: var(--sage);
   margin-bottom: clamp(0.35rem, 1vh, 0.75rem);
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out 0.3s forwards;
 }
 
 .landing-names {
@@ -165,8 +156,6 @@ body.page-landing {
   color: var(--text);
   line-height: 1.15;
   margin-bottom: 0.25rem;
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out 0.4s forwards;
 }
 
 .landing-ampersand {
@@ -183,8 +172,6 @@ body.page-landing {
   color: var(--text-soft);
   font-style: italic;
   margin: clamp(0.5rem, 1.5vh, 1rem) 0;
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out 0.5s forwards;
 }
 
 .landing-divider {
@@ -193,8 +180,6 @@ body.page-landing {
   gap: 1rem;
   margin: clamp(0.5rem, 1.5vh, 1rem) auto;
   max-width: 280px;
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out 0.6s forwards;
 }
 
 .landing-divider::before,
@@ -217,8 +202,6 @@ body.page-landing {
   margin: 0 auto clamp(0.75rem, 2vh, 1.25rem);
   font-weight: 300;
   line-height: 1.55;
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out 0.7s forwards;
 }
 
 .btn-primary {
@@ -238,10 +221,8 @@ body.page-landing {
   border: none;
   border-radius: var(--radius);
   cursor: pointer;
-  transition: var(--transition);
+  transition: background 0.2s, box-shadow 0.2s;
   box-shadow: 0 4px 20px rgba(184, 149, 106, 0.35);
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out 0.9s forwards;
 }
 
 .btn-primary:hover {
@@ -265,8 +246,6 @@ body.page-landing {
   font-size: 0.7rem;
   color: var(--text-soft);
   letter-spacing: 0.1em;
-  opacity: 0;
-  animation: fadeUp 0.8s ease-out 1.1s forwards;
 }
 
 /* Floating petals */
@@ -599,6 +578,44 @@ label.field-label {
   font-size: 1.35rem;
   color: var(--text);
   line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.recap-details {
+  text-align: left;
+  user-select: none;
+}
+
+.recap-block {
+  background: #f5f1ea;
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.recap-block:last-child { margin-bottom: 0; }
+
+.recap-block h3 {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.recap-block p {
+  font-size: 0.9rem;
+  margin-bottom: 0.45rem;
+  line-height: 1.5;
+}
+
+.recap-block p:last-child { margin-bottom: 0; }
+
+.recap-block p span {
+  display: inline-block;
+  min-width: 7rem;
+  color: var(--text-soft);
+  font-size: 0.8rem;
 }
 
 .page-form #accompagnant-block {

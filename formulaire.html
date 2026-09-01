@@ -4,12 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fiche renseignements — Axelle & Axel</title>
+  <script>
+    (function () {
+      var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+      if (nav && nav.type === 'reload') location.replace('index.html');
+    })();
+  </script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="page-form">
   <div class="form-page">
     <header class="form-header">
-      <a href="index.html" class="back-link">← Retour</a>
       <p class="form-context">Mariage · Cape Town</p>
       <h1>Fiche de renseignements</h1>
     </header>
@@ -255,7 +260,8 @@
       </form>
 
       <div class="form-section recap-section" id="recap">
-        <p class="recap-intro" id="recap-message">Vos informations ont été prises en compte.</p>
+        <p class="recap-intro">Vos informations ont été prises en compte.</p>
+        <div class="recap-details" id="recap-details"></div>
       </div>
     </div>
   </div>

@@ -1,22 +1,13 @@
 // URL configurée dans js/config.js
 
 document.addEventListener('DOMContentLoaded', () => {
-  const nav = performance.getEntriesByType('navigation')[0];
-  if (sessionStorage.getItem('mariage-thanks') === '1') {
-    if (nav && nav.type === 'reload') {
-      sessionStorage.removeItem('mariage-thanks');
-      window.location.replace('index.html');
-      return;
-    }
-    sessionStorage.removeItem('mariage-thanks');
-  }
-
   const form = document.getElementById('form-mariage');
   const nbEnfantsBlock = document.getElementById('nb-enfants-block');
   const accompagnantBlock = document.getElementById('accompagnant-block');
   const activitesAccBlock = document.getElementById('activites-acc-block');
   const activitesPrincipalBlock = document.getElementById('activites-principal-block');
   const recap = document.getElementById('recap');
+  const recapDetails = document.getElementById('recap-details');
   const status = document.getElementById('submit-status');
 
   if (!form) return;
@@ -55,10 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function clearErrors() {
     document.querySelectorAll('.field.error').forEach(f => f.classList.remove('error'));
-    if (status) {
-      status.style.display = 'none';
-      status.style.color = '';
-    }
+    if (status) status.style.display = 'none';
   }
 
   function setError(id) {
@@ -94,28 +82,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    const menuPrincipal = document.querySelector('input[name="menu-principal"]:checked');
-    if (!menuPrincipal) {
+    if (!document.querySelector('input[name="menu-principal"]:checked')) {
       firstError = firstError || setError('field-menu-principal');
       valid = false;
     }
 
     const accompagne = document.querySelector('input[name="accompagne"]:checked').value === 'oui';
     if (accompagne) {
-      const prenomAcc = document.getElementById('prenom-acc').value.trim();
-      const nomAcc = document.getElementById('nom-acc').value.trim();
-      if (!prenomAcc) { firstError = firstError || setError('field-prenom-acc'); valid = false; }
-      if (!nomAcc) { firstError = firstError || setError('field-nom-acc'); valid = false; }
-
-      const menuAcc = document.querySelector('input[name="menu-acc"]:checked');
-      if (!menuAcc) { firstError = firstError || setError('field-menu-acc'); valid = false; }
+      if (!document.getElementById('prenom-acc').value.trim()) {
+        firstError = firstError || setError('field-prenom-acc'); valid = false;
+      }
+      if (!document.getElementById('nom-acc').value.trim()) {
+        firstError = firstError || setError('field-nom-acc'); valid = false;
+      }
+      if (!document.querySelector('input[name="menu-acc"]:checked')) {
+        firstError = firstError || setError('field-menu-acc'); valid = false;
+      }
     }
 
     if (!valid) {
       showFormError('Veuillez compléter tous les champs obligatoires.');
-      if (firstError) {
-        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+      if (firstError) firstError.scrollIntoView({ block: 'center' });
     }
 
     return valid;
@@ -149,72 +136,67 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  async function sendToGoogleSheets(data) {
-    if (!GOOGLE_SCRIPT_URL) return true;
+  function listOrNone(items, empty) {
+    return items && items.length ? items.join(', ') : empty;
+  }
 
-    const payload = JSON.stringify(data);
+  function buildRecapHTML(data) {
+    const d = data;
+    let html = '<div class="recap-block"><h3>Vous</h3>';
+    html += `<p><span>Nom</span>${d.prenom} ${d.nom}</p>`;
+    html += `<p><span>Enfants</span>${d.enfants === 'Oui' ? 'Oui (' + d.nbEnfants + ')' : 'Non'}</p>`;
+    html += `<p><span>Accompagné(e)</span>${d.accompagne}</p>`;
+    html += `<p><span>Activités</span>${d.activitesInteret}</p>`;
+    if (d.activitesInteret === 'Oui') {
+      html += `<p><span>Jeudi</span>${listOrNone(d.actJeudi, '—')}</p>`;
+      html += `<p><span>Vendredi</span>${listOrNone(d.actVendredi, '—')}</p>`;
+      html += `<p><span>Brunch lundi</span>${listOrNone(d.actLundi, '—')}</p>`;
+    }
+    html += `<p><span>Menu</span>${d.menuPrincipal}</p></div>`;
 
-    try {
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: payload,
-        redirect: 'follow'
-      });
-
-      const text = await response.text();
-      try {
-        const result = JSON.parse(text);
-        if (result.success) return true;
-      } catch (e) {
-        if (response.ok) return true;
+    if (d.accompagne === 'Oui') {
+      html += '<div class="recap-block"><h3>Accompagnant(e)</h3>';
+      html += `<p><span>Nom</span>${d.prenomAcc} ${d.nomAcc}</p>`;
+      html += `<p><span>Activités</span>${d.activitesInteretAcc}</p>`;
+      if (d.activitesInteretAcc === 'Oui') {
+        html += `<p><span>Jeudi</span>${listOrNone(d.actJeudiAcc, '—')}</p>`;
+        html += `<p><span>Vendredi</span>${listOrNone(d.actVendrediAcc, '—')}</p>`;
+        html += `<p><span>Brunch lundi</span>${listOrNone(d.actLundiAcc, '—')}</p>`;
       }
-    } catch (e) {
-      // méthode de secours
+      html += `<p><span>Menu</span>${d.menuAcc}</p></div>`;
     }
 
-    await fetch(GOOGLE_SCRIPT_URL, {
+    return html;
+  }
+
+  function sendToGoogleSheets(data) {
+    if (!GOOGLE_SCRIPT_URL) return;
+    fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: payload
-    });
-
-    return true;
+      body: JSON.stringify(data)
+    }).catch(() => {});
   }
 
-  function showSuccess() {
+  function showSuccess(data) {
     sessionStorage.setItem('mariage-thanks', '1');
+    recapDetails.innerHTML = buildRecapHTML(data);
 
     const header = document.querySelector('.form-header');
     if (header) header.style.display = 'none';
 
     form.style.display = 'none';
     recap.classList.add('visible');
-    recap.scrollIntoView({ behavior: 'smooth' });
+    recap.scrollIntoView({ block: 'start' });
   }
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
-
     if (!validate()) return;
 
-    const btn = document.getElementById('btn-submit');
     const data = getFormData();
-
-    btn.disabled = true;
-    btn.textContent = 'Envoi en cours…';
-    status.style.display = 'block';
-    status.style.color = '#5c534c';
-    status.textContent = 'Envoi en cours…';
-
-    try {
-      await sendToGoogleSheets(data);
-      showSuccess();
-    } catch (err) {
-      showFormError('Erreur lors de l\'envoi. Réessayez dans un instant.');
-      btn.disabled = false;
-      btn.textContent = 'Envoyer';
-    }
+    showSuccess(data);
+    sendToGoogleSheets(data);
   });
 });
